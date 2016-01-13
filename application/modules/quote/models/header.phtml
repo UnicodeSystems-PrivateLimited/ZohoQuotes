@@ -1,0 +1,1109 @@
+<?php
+$memberData = Fox::getModel('member/session')->getLoginData();
+?>
+<script type="text/javascript">
+    $(document).ready(function() {
+    });
+</script>
+<div class="Topheader_new" style="display: none;">
+    <div class="header">
+        <div class="top-logo"><a href="<?php echo Fox::getUrl('dashboard'); ?>"><img alt="PMS Logo" src="<?php echo $this->themeUrl('images/header/logo.png') ?>" width="140" height="35" /></a></div>
+        <div class="nav-row">
+            <ul>
+                <li class="n2 global_search_items"><a href="#"></a><span class="menu_link"><span class="cone">Dashboard</span></span></li>
+                <li class="n3"><a href="#"></a><span class="menu_link"><span class="cone">Task Board</span></span></li>
+                <li class="n4"><a href="#"></a><span class="menu_link"><span class="cone">Utility</span></span></li>
+                <?php //if (Fox::isResourceAllowed(Fox::getHelper('project/data')->getGlobalSearchAction())): ?>
+                <li class="n5" onclick="getFormLayoutInContainer('<?php //echo Fox::getHelper('project/data')->getGlobalSearchUrl();             ?>', $('#dashboard_global_search'));"><a href="#"></a><span class="menu_link"><span class="cone">Manage Project</span></span></li>
+                <?php //endif; ?>
+                <li class="n6"><a href="#"></a><span class="menu_link"><span class="cone">Apply Leave</span></span></li>
+                <li class="n7"><a href="#"></a><span class="menu_link"><span class="cone">PMS Bug</span></span></li>
+                <?php //if (Fox::isResourceAllowed(Fox::getHelper('member/search')->getGlobalSearchAction())): ?>
+                <li class="n8" onclick="getFormLayoutInContainer('<?php //echo Fox::getHelper('member/search')->getGlobalSearchUrl();             ?>', $('#dashboard_global_search'));"><a href="#"></a><span class="menu_link"><span class="cone">Manage Member</span></span></li>
+                <?php //endif; ?>
+                <?php //if (Fox::isResourceAllowed(Fox::getHelper('team/search')->getGlobalSearchAction())): ?>
+                <li class="n9" onclick="getFormLayoutInContainer('<?php //echo Fox::getHelper('team/search')->getGlobalSearchUrl();             ?>', $('#dashboard_global_search'));"><a href="#"></a><span class="menu_link"><span class="cone">Manage Team</span></span></li>
+                <?php //endif; ?>
+                <?php //if (Fox::isResourceAllowed(Fox::getHelper('company/search')->getGlobalSearchAction())): ?>
+                <li class="n10" onclick="getFormLayoutInContainer('<?php //echo Fox::getHelper('company/search')->getGlobalSearchUrl();             ?>', $('#dashboard_global_search'));"><a href="#"></a><span class="menu_link"><span class="cone">Manage Company</span></span></li>
+                <?php //endif; ?>
+
+                <li class="n11"><a href="#"></a><span class="menu_link"><span class="cone">Administrator</span></span></li>
+            </ul>
+        </div>
+        <div class="hr_note"><?php echo $this->getContent('notification_updates'); ?></div>
+
+        <div class="nav-right-row">
+            <ul>
+                <li class="icon-1"><a href="#"></a></li>
+                <li class="icon-2"><a href="#"></a></li>
+                <li class="icon-3"><a href="#"></a></li>
+                <li class="icon-4"><a href="#"></a></li>
+                <li class="icon-5"><a href="#"></a></li>
+                <li class="icon-6 top_member"><a href="#"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="containTab" id="dashboard_global_search" style="display: none;">
+    </div>
+</div>
+<div class="Topheader">
+    <div class="top-logo"><a href="<?php echo Fox::getUrl('dashboard'); ?>"><img alt="PMS Logo" src="<?php echo $this->themeUrl('images/header/logo.png') ?>" width="140" height="35" /></a></div>
+    <?php if ($memberData): ?>   
+        <div class="msgbox warning-msgbox">
+            <?php echo Fox::getHelper('core/message')->getAllWarningHtml(); ?>
+        </div>
+        <div class="msgbox all-msg-info">
+            <?php echo Fox::getHelper('core/message')->getAllMessagesHtml(); ?>
+        </div>
+        <div class="right-sidebar-toggler fr active"></div>
+        <div class="topheader-right">
+            <?php if (Fox::getHelper('member/data')->isHideMemberProfileHeader()): ?>
+                <div class="top_member"><span class="profileSpan"><?php echo (($memberData) ? $memberData->getFirstName() . '&nbsp;' . $memberData->getLastName() : ''); ?>  <?php echo (($memberData && $memberData->getAttrEmpCode()) ? '( ' . $memberData->getAttrEmpCode() . ' )' : ''); ?> </span>
+                    <span class="member-arrow">&nbsp;</span>
+                    <div class="profilePopup">
+                        <div class="innerpop">
+                            <div class="emailRow"><a href="https://mail.google.com/hosted/unicodesystems.in" target="blank"><?php echo $memberData->getEmailId() ?></a></div> 
+                            <div class="profileRow">
+                                <div class="user-info">
+                                    <span class="user-name-title"><?php echo (($memberData) ? $memberData->getFirstName() . '&nbsp;' . $memberData->getLastName() : ''); ?></span>
+                                    <!--<span class="user-pro-name"><a href="<?php // echo Fox::getUrl('member/ajax/ajax-view');   ?>" title="Profile">Profile</a></span>-->
+                                    <!--<span class="user-pro-name"><a href="<?php // echo Fox::getUrl('member/account/profile-setting')                                                                                                      ?>" title="Settings">Settings</a></span>-->
+                                </div>
+                                <div class="img-user"><img src="<?php echo $memberData->getResizedMemberImage($memberData->getMemberImage(), 170, 55); ?>"/></div>
+                            </div>
+                            <div class="logoutRow">
+                                <?php if (!Fox::getModel('member/session')->getIsPmsClient()): ?>
+                                                                                                        <!--<span class="login-btn"><a href="<?php // echo Fox::getUrl('member/account/get-logout-alert');                  ?>" class="user_login_buttons pms_submit_buttons">Logout</a></span>-->
+                                    <span class="parma_logout">                                
+                                        <div class="checkbox1">
+                                            <label for="parama_logout"><input id="parama_logout" type="checkbox" name="permanent_logout" class="logout_type list-check"><span class="accept-top"></span>Permanent Logout</label>
+                                        </div>                                
+                                    </span>
+                                    <span class="login-btn head_login">
+                                        <button type="button" class="user_login_buttons pms_submit_buttons" id="pms_member_logout">Logout</button>
+                                    </span>
+                                <?php endif; ?>
+                                <span class="user-suppport"><a href="<?php echo Fox::getUrl('member/ajax/ajax-view'); ?>">Account</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            <?php else: ?>
+                <div class="profile-links odesk-log">
+                    <?php if (!Fox::getModel('member/session')->getIsPmsClient()): ?>
+                        <span class="logout-btn"><button type="button" class="user_login_buttons pms_submit_buttons" id="pms_member_logout">Logout</button><input type="checkbox" name="permanent_logout" class="logout_type list-check">Permanent Logout</span>
+                    <?php endif; ?>
+                    <span class="account-btn HideMemberProfileHeader"><a href="<?php echo Fox::getUrl('member/ajax/ajax-view'); ?>">Account</a></span>
+                </div> 
+            <?php endif; ?>           
+        <?php endif; ?>
+    </div>
+
+</div>
+<div class="header-top-menu">
+    <?php echo $this->getContent('header_menu'); ?>
+    <div class="top-header-menu">
+        <ul class="quick-create">                
+            <?php if (Fox::getHelper('member/data')->isAllowedForMemberQuickCreate() || Fox::getHelper('project/data')->isAllowedForProjectQuickCreate() || Fox::getHelper('task/data')->isAllowedForTaskQuickCreate() || Fox::getHelper('project/data')->isAllowedForProjectQuickRequest() || Fox::getHelper('task/data')->isAllowedForTaskQuickRequest()) { ?>
+                <?php // if (Fox::isResourceAllowed('team/manage-team/index')): ?>
+                <!--                    <li class="team-search">
+                                        <a class="ttp add-team-icon" href="<?php // echo Fox::getUrl('team/manage-team');   ?>" title="Team">Team</a>                        
+                                    </li>-->
+                <?php // endif; ?>
+                <?php // if (Fox::isResourceAllowed('member/member/member-container')): ?>
+                <!--                    <li class="member_search_li">
+                                        <a class="ttp member_search" href="#" title="Member Search">Member Search</a>
+                                        <div class="member_search_main_container">
+                                            <div class="member_search_container"></div><span class="request-close" id="member_quick_search_close">X</span></div>
+                                    </li>-->
+                <?php // endif; ?>
+                <?php if (Fox::isResourceAllowed('dashboard/main-dashboard/dashboard-sidebar')): ?>
+                    <li class="member_list_li">
+                        <a class="ttp proj_list" href="<?php echo Fox::getUrl('dashboard/main-dashboard/dashboard-sidebar'); ?>" title="Project List">Project List</a>                        
+                    </li>
+                <?php endif; ?>
+                <?php if (Fox::isResourceAllowed('member/ajax/side-bar')): ?>
+                    <li class="member_list_li">
+                        <a class="ttp member_se_list memlist" href="<?php echo Fox::getUrl('member/ajax/side-bar'); ?>" title="Member List">Member List</a>                        
+                    </li>
+                <?php endif; ?>
+                <li class="member_list_li">
+                    <a class="ttp company_list complist" href="#" title="Company List">Company List</a>                        
+                </li>
+                <li class="member_list_li">
+                    <a class="ttp mestimation_list estlist" href="#" title="Estimation List">Estimation List</a>                        
+                </li>
+
+                <?php if (Fox::isResourceAllowed('project/requirement/search-container')): ?>
+                    <li class="requirement_search_li">
+                        <a class="ttp requirement_search" href="#" title="Requirement Search">Requirement Search</a>
+                        <div class="quick_requirement_serach_main_container">
+                            <div class="requirement_search_container"></div><span class="request-close" id="requirement_quick_search_close">X</span></div>
+                    </li>
+                <?php endif; ?>
+                <?php if (Fox::isResourceAllowed('suggestion/create/request-container')): ?>
+                    <li class="sugg_compl_search_li">
+                        <a class="ttp compl_search quick_create request-search" href="#" title="Request" onclick="loadFormHtmlContainer('<?php echo Fox::getUrl('suggestion/create/get-form',array('isAjax'=>TRUE)); ?>')">Request</a>
+                        <div class="quick_sugg_compl_serach_main_container">
+                            <div class="sugg_compl_search_container"></div><span class="request-close" id="sugg_compl_search_close">X</span></div>
+                    </li>
+                <?php endif; ?>
+                <?php // if (Fox::isResourceAllowed('member/used-ip/used-ip-container')): ?>
+                <!--                    <li class="used_ip_search_li">
+                                        <a class="ttp used_ip_search" href="#" title="Used Ip Search">Used Ip Search</a>
+                                        <div class="quick_used_ip_serach_main_container"><div class="used_ip_search_container"></div><span class="request-close" id="used_ip_quick_search_close">X</span></div>
+                                    </li>-->
+                <?php // endif; ?>   
+                <?php if (Fox::isResourceAllowed('bugsystem/bugcontainer/search-container')): ?>
+                    <li class="add_bug_search_li">
+                        <a class="ttp add_bug_search" href="#" title="Post Bug">Post Bug</a>
+                        <div class="quick_add_bug_serach_main_container"><div class="add_bug_search_container"></div><span class="request-close" id="add_bug_quick_search_close">X</span></div>
+                    </li>
+                <?php endif; ?>   
+                <?php //echo $this->getContent('task_alert');?>
+                <li class="quick_create">
+                    <a class="ttp quick_create" href="#" title="Quick Create">Quick Create</a>
+                    <ul class="quick-create-submenu">
+                        <?php if (Fox::getHelper('member/data')->isAllowedForMemberQuickCreate()) { ?>
+                            <li><span class="open_custom_form_html_container" href="<?php echo Fox::getUrl('member/account/create', array('isAjax' => TRUE)) ?>">Create Member</span></li>
+                        <?php } ?>
+                        <?php if (Fox::getHelper('project/data')->isAllowedForProjectQuickCreate()) { ?> 
+                            <li><span class="open_custom_form_html_container" href="<?php echo Fox::getUrl('project/create/create-form', array('isAjax' => TRUE)) ?>">Create Project</span></li>
+                        <?php } ?>
+                        <?php if (Fox::isResourceAllowed(Fox_Task_Helper_Data::getTaskFormAction())): ?>
+                            <li>
+                                <span class="open_custom_form_html_container" href="<?php echo Fox::getUrl(Fox_Task_Helper_Data::getTaskFormAction(), array('isAjax' => TRUE)) ?>">Create Task</span>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (Fox::isResourceAllowed('task/managerial-task/create-unassigned-task')): ?>
+                            <li>
+                                <span class="open_custom_form_container" href="<?php echo Fox::getUrl('task/managerial-task/create-unassigned-task', array('isAjax' => TRUE)) ?>">Create Managerial Task</span>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+                <?php // if (Fox::isResourceAllowed('bidding/index/add')): ?>
+                <!--                    <li class="add-bid-icon">
+                                        <a class="ttp open_custom_form_container" href="<?php // echo Fox::getUrl('bidding/index/add');   ?>" title="Add Project Bidding">Add Project Bidding</a>                        
+                                    </li>-->
+                <?php // endif; ?>
+                <!--                <li class="setting-menu">
+                                    <a href="#" title="Settings" class="ttp">&nbsp;</a>
+                                </li>-->
+            <?php } ?>
+            <?php if (Fox::isResourceAllowed(Fox_Todo_Helper_Data::getTodoAjaxListAction())): ?>
+                <li class="todo-search">
+                    <a class="ttp add-todo-icon isAjax" href="<?php echo Fox::getUrl(Fox_Todo_Helper_Data::getTodoAjaxListAction()); ?>" title="Add Todo">Add Todo</a>                        
+                </li>
+            <?php endif; ?>
+                <?php if(Fox::isResourceAllowed('wiki/display/index')):?>
+            <li class="menu-help">
+                <a class="ttp quick_create help-icon" href="<?php echo Fox::getUrl('wiki/display/index') ?>" title="Help">Help</a>
+                <ul class="quick-create-submenu new-section-sub">
+                    <li><a href="">PMSFox Web Wiki</a></li>
+                    <li><a class="" href="#">PMSFox Client Wiki</a></li>
+                    <li><a class="" href="#">Magento Wiki</a></li>
+                    <li><a class="" href="#">About PMSFox</a></li>
+                </ul>
+            </li>
+            <?php endif;?>
+
+        </ul>
+        <div id="add_new_member_data" class="ssp"></div>
+        <div id="edit_created_project_data"></div>
+        <div id="add_request_project_data"></div>
+        <div id="request_new_task"></div>
+        <div id="created_new_task"></div>
+        <div id="add_new_bug"></div>
+        <div class="start_project project-requirement-start"></div>
+        <div class="add_milestone"></div>
+        <div class="add_new_message"></div>
+        <div class="custom_view_details"></div>
+        <div id="create_project_module_reqdata"></div>
+        <div id="add_member_setting_dialog"></div>
+        <div id="add_member_ip_setting_dialog"></div>
+        <div id="add_msg_data"></div>
+        <div id="add_file_data" class="dialog-inner-content"></div>
+        <div id="add_new_company_data"></div>
+        <div id="edit_created_ftp_data"></div>
+        <div id="request_relaxation_time"></div>
+    </div>
+</div>
+<?php if ($memberData) { ?>
+    <div class=""><?php // echo $this->getContent('reminder_reminder');                    ?></div>
+<?php } ?>
+
+<script type="text/javascript">
+function scrollMethod() {
+console.log('header called');
+    }
+    var memberBtn;
+    var memberContainerObj = $('.member_search_container');
+    $('.wrapper .header_wrapper .header-top-menu .top-header-menu .member_search').click(function(me) {
+        me.stopPropagation();
+        memberBtn = $(this).parents('.member_search_li').find('.member_search_container');
+        memberBtn.css({'postion': 'absolute'}).parents('li').css({'position': 'realtive'});
+        if ($(this).hasClass('opened')) {
+            jQuery(this).removeClass('opened');
+            memberBtn.css('display', 'none');
+            $('#member_quick_search_close').css('display', 'none');
+        } else {
+            closeRequestContainer();
+            closeUsedIpContainer();
+            $(this).addClass('opened');
+            memberBtn.css('display', 'block');
+            $('#member_quick_search_close').css('display', 'block');
+            $.ajax({
+                url: "<?php echo Fox::getUrl('member/member/member-container', array('isAjax' => TRUE)); ?>",
+                data: {},
+                success: function(data) {
+                    memberBtn.html(data);
+                }
+            });
+        }
+    });
+
+    var requirementBtnObj;
+    var reqContainerObj = $('.requirement_search_container');
+    //var memberContainerObj = $('.member_search_container');
+    $('.wrapper .header_wrapper .header-top-menu .top-header-menu .requirement_search').click(function(e) {
+        e.stopPropagation();
+        //memberContainerObj = $(this).parents('.member_search_li').find('.member_search_container');
+        requirementBtnObj = $(this).parents('.requirement_search_li').find('.requirement_search_container');
+        requirementBtnObj.css({'position': 'absolute'}).parents('li').css('position', 'realtive');
+        if ($(this).hasClass('opened')) {
+            jQuery(this).removeClass('opened');
+            requirementBtnObj.css('display', 'none');
+            $('#requirement_quick_search_close').css('display', 'none');
+        } else {
+            closeRequestContainer();
+            closeUsedIpContainer();
+            $(this).addClass('opened');
+            requirementBtnObj.css('display', 'block');
+            $('#requirement_quick_search_close').css('display', 'block');
+            $.ajax({
+                url: "<?php echo Fox::getUrl('project/requirement/search-container', array('isAjax' => TRUE)); ?>",
+                data: {},
+                success: function(data) {
+                    requirementBtnObj.html(data);
+                }
+            });
+        }
+    });
+
+    var requestBtnObj;
+    var requestContainerObj = $('.sugg_compl_search_container');
+    $('.wrapper .header_wrapper .header-top-menu .top-header-menu .sugg_compl_search').click(function(e) {
+        e.stopPropagation();
+        requestBtnObj = $(this).parents('.sugg_compl_search_li').find('.sugg_compl_search_container');
+        requestBtnObj.css({'position': 'absolute'}).parents('li').css('position', 'realtive');
+        if ($(this).hasClass('opened')) {
+            jQuery(this).removeClass('opened');
+            requestBtnObj.css('display', 'none');
+            $('#sugg_compl_search_close').css('display', 'none');
+        } else {
+            closeRequirementContainer();
+            closeUsedIpContainer();
+            $(this).addClass('opened');
+            requestBtnObj.css('display', 'block');
+            $('#sugg_compl_search_close').css('display', 'block');
+            $.ajax({
+                url: "<?php echo Fox::getUrl('suggestion/create/request-container', array('isAjax' => TRUE)); ?>",
+                data: {},
+                success: function(data) {
+                    requestBtnObj.html(data);
+                }
+            });
+        }
+    });
+
+    var usedipBtnObj;
+    var usedipContainerObj = $('.used_ip_search_container');
+    $('.wrapper .header_wrapper .header-top-menu .top-header-menu .used_ip_search').click(function(e) {
+        e.stopPropagation();
+        usedipBtnObj = $(this).parents('.used_ip_search_li').find('.used_ip_search_container');
+        usedipBtnObj.css({'position': 'absolute'}).parents('li').css('position', 'realtive');
+        if ($(this).hasClass('opened')) {
+            jQuery(this).removeClass('opened');
+            usedipBtnObj.css('display', 'none');
+            $('#used_ip_quick_search_close').css('display', 'none');
+        } else {
+            closeRequirementContainer();
+            closeRequestContainer();
+            $(this).addClass('opened');
+            usedipBtnObj.css('display', 'block');
+            $('#used_ip_quick_search_close').css('display', 'block');
+            $.ajax({
+                url: "<?php echo Fox::getUrl('member/used-ip/used-ip-container', array('isAjax' => TRUE)); ?>",
+                data: {},
+                success: function(data) {
+                    usedipBtnObj.html(data);
+                }
+            });
+        }
+    });
+
+    var bugBtnObj;
+    var bugContainerObj = $('.add_bug_search_container');
+    $('.wrapper .header_wrapper .header-top-menu .top-header-menu .add_bug_search').click(function(e) {
+        e.stopPropagation();
+        bugBtnObj = $(this).parents('.add_bug_search_li').find('.add_bug_search_container');
+        bugBtnObj.css({'position': 'absolute'}).parents('li').css('position', 'realtive');
+        if ($(this).hasClass('opened')) {
+            jQuery(this).removeClass('opened');
+            bugBtnObj.css('display', 'none');
+            $('#add_bug_quick_search_close').css('display', 'none');
+        } else {
+            closeRequestContainer();
+            closeUsedIpContainer();
+            closeRequirementContainer();
+            $(this).addClass('opened');
+            bugBtnObj.css('display', 'block');
+            $('#add_bug_quick_search_close').css('display', 'block');
+            $.ajax({
+                url: "<?php echo Fox::getUrl('bugsystem/bugcontainer/search-container', array('isAjax' => TRUE)); ?>",
+                data: {},
+                success: function(data) {
+                    bugBtnObj.html(data);
+                }
+            });
+        }
+    });
+
+    var mainFormContainer = $('#outer-div-dialog');
+    $(document).click(function(event) {
+        if ($(event.target).parents().index($('.requirement_search_container')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+            if (reqContainerObj.is(":visible") || reqContainerObj.parents('.quick_requirement_serach_main_container').siblings('.requirement_search').hasClass('opened')) {
+                closeRequirementContainer();
+            }
+        }
+
+        if ($(event.target).parents().index($('.member_search_container')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+            if (memberContainerObj.is(":visible") || memberContainerObj.parents('.member_search_main_container').siblings('.member_search').hasClass('opened')) {
+                closeMemberContainer();
+            }
+        }
+
+        if ($(event.target).parents().index($('#dashboard_global_search')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+//            if ($('#dashboard_global_search').is(":visible") || reqContainerObj.parents('.quick_requirement_serach_main_container').siblings('.requirement_search').hasClass('opened')) {
+//                closeRequirementContainer();
+//            }
+//            console.log('in --');
+        }
+//        if ($(event.target).parents().index($('#dashboard_global_search')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+////            if ($('#dashboard_global_search').children().length) {
+////                $('#dashboard_global_search').addClass('opened');
+//            console.log('in --');
+////            } else {
+////                $('#dashboard_global_search').css('display', 'none');
+////                $('#dashboard_global_search').removeClass('opened');
+////            console.log('out --' + $('#dashboard_global_search').children().length);
+////            }
+//        }else{
+//            console.log('out --');
+//            
+//        }
+        if ($(event.target).parents().index($('.sugg_compl_search_container')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+            if (requestContainerObj.is(":visible") || requestContainerObj.parents('.quick_sugg_compl_serach_main_container').siblings('.sugg_compl_search').hasClass('opened')) {
+                closeRequestContainer();
+            }
+        }
+        if ($(event.target).parents().index($('.used_ip_search_container')) == -1) {
+            if (usedipContainerObj.is(":visible") || usedipContainerObj.parents('.quick_used_ip_serach_main_container').siblings('.used_ip_search').hasClass('opened')) {
+                closeUsedIpContainer();
+            }
+        }
+        if ($(event.target).parents().index($('.add_bug_search_container')) == -1 && $(event.target).parents().index($('ul.ui-autocomplete')) == -1) {
+            if (bugContainerObj.is(":visible") || bugContainerObj.parents('.quick_add_bug_serach_main_container').siblings('.add_bug_search').hasClass('opened')) {
+                closeBugContainer();
+            }
+        }
+        if ($(event.target).parents().index($('#outer-div-dialog')) == -1 && !$(event.target).parents().not('ul.ui-autocomplete')) {
+//           alert('in call--');
+//             closeFormContainer();
+        }
+    });
+    function closeMemberContainer() {
+        memberContainerObj.hide();
+        $('#member_quick_search_close').hide();
+        memberContainerObj.parents('.member_search_main_container').siblings('.member_search').removeClass('opened');
+    }
+    function closeRequirementContainer() {
+        reqContainerObj.hide();
+        $('#requirement_quick_search_close').hide();
+        reqContainerObj.parents('.quick_requirement_serach_main_container').siblings('.requirement_search').removeClass('opened');
+    }
+    function closeRequestContainer() {
+        requestContainerObj.hide();
+//        requestBtnObj.html('');
+        $('#sugg_compl_search_close').hide();
+        requestContainerObj.parents('.quick_sugg_compl_serach_main_container').siblings('.sugg_compl_search').removeClass('opened');
+    }
+    function closeUsedIpContainer() {
+        usedipContainerObj.hide();
+        $('#used_ip_quick_search_close').hide();
+        usedipContainerObj.parents('.quick_used_ip_serach_main_container').siblings('.used_ip_search').removeClass('opened');
+    }
+    function closeBugContainer() {
+        bugContainerObj.hide();
+        $('#add_bug_quick_search_close').hide();
+        bugContainerObj.parents('.quick_add_bug_serach_main_container').siblings('.add_bug_search').removeClass('opened');
+    }
+
+    var flg = 0;
+    $(document).ready(function(e) {
+        var $profilepopup = $('.profilePopup');
+        $('.top_member').click(function(e) {
+            e.stopPropagation();
+            if ($profilepopup.is(":hidden")) {
+                $profilepopup.show();
+            }
+            else {
+                $profilepopup.hide();
+            }
+        });
+        $(document.body).click(function() {
+            $('.profilePopup').hide();
+        });
+        $('.profilePopup').click(function(e) {
+            e.stopPropagation();
+        });
+
+
+        if ($('.submenu', '.header-sub-menu').children().length <= 1) {
+            $('.header-sub-menu').width("190px");
+            $('.administrator').removeClass("administrator");
+        }
+        $('.msgbox_close').hide();
+        if ($('.all-msg-info').children().hasClass('infos') || $('.all-msg-info').children().hasClass('errors')) {
+            $('.all-msg-info').animate({top: '120px'}, 1600, function() {
+                $('.msgbox_close').show();
+            });
+        }
+        $('.msgbox').css("left", ($(window).width() / 2 - $('.msgbox ul').width() / 2) + "px");
+        $('.msgbox_close').click(function() {
+            $('.msgbox.all-msg-info').animate({top: '-285px'});
+        });
+
+
+        $('.dialog-inner-div').click(function(e) {
+            e.stopPropagation();
+        });
+
+
+        $(document).click(function() {
+            flg = 0;
+            overout();
+        });
+        function overout() {
+            if (flg === 0) {
+                var not_cont = $('#outer-div-dialog').height() + 100;
+                $('.post_project_bug').bind('toggle', function() {
+                    $(this).siblings('#outer-div-dialog').animate({top: '-' + not_cont});
+                });
+            }
+        }
+        windowresize();
+        dialogHeight();
+    });
+
+
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#add_new_member_data').dialog({
+            autoOpen: false,
+            width: 852,
+            height: 440,
+            title: 'Personal Detail',
+            modal: true,
+            draggable: true,
+            resizable: true,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.add_new_member').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#add_new_member_data').dialog('open');
+                $('#add_new_member_data').load($(this).attr('href'));
+                $('#add_new_member_data').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "SAVE": function() {
+//                        submitQuickRegisterForm();
+                        submitRegisterForm();
+                    }});
+            }
+        });
+    });
+    $(function() {
+        $('#add_new_member_data').dialog({
+            autoOpen: false,
+            width: 852,
+            height: 440,
+            title: 'Personal Detail',
+            modal: true,
+            draggable: true,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.live_new_member').live('click', function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#add_new_member_data').dialog('open');
+                $('#add_new_member_data').load($(this).attr('href'));
+                $('#add_new_member_data').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "SAVE": function() {
+//                        submitQuickRegisterForm();
+                        submitRegisterForm();
+                    }});
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+//    $(function() {
+//        $('#edit_created_project_data').dialog({
+//            autoOpen: false,
+//            height: 555,
+//            width: 756,
+//            title: 'Project Detail',
+//            modal: true,
+//            draggable: true,
+//            resizable: false,
+//            show: 'slide',
+//            hide: 'slide'
+//        });
+//        $('.add_new_project').live('click', function(event) {
+//            event.preventDefault();
+//            if ($(this).attr('href') !== 'javascript:void(0)') {
+//                closeRequirementContainer();
+//                $('#edit_created_project_data').dialog('open');
+//                $('#edit_created_project_data').load($(this).attr('href'));
+//                $('#edit_created_project_data').dialog('option', 'buttons', {"CLOSE": function() {
+//                        $(this).dialog("close");
+//                    }, "SAVE": function() {
+//                        submitRegisterForm();
+//                    }});
+//            }
+//        });
+//    });
+    $('.add_new_project_menu').bind('click', function(event) {
+        event.preventDefault();
+        if ($(this).attr('href') !== 'javascript:void(0)') {
+            closeRequirementContainer();
+            $('#edit_created_project_data').dialog('open');
+            $('#edit_created_project_data').load($(this).attr('href'));
+            $('#edit_created_project_data').dialog('option', 'buttons', {"CLOSE": function() {
+                    $(this).dialog("close");
+                }, "SAVE": function() {
+                    submitRegisterForm();
+                }});
+        }
+    });
+
+    function getValidation() {
+        var pjtCode = jQuery('#project_code').val();
+        var startDate = jQuery('#start_date').val();
+        var endDate = jQuery('#end_date').val();
+        var pjtId = jQuery('#proj_id').val();
+        if (pjtId) {
+            jQuery('#project').submit();
+        } else {
+            $.ajax({
+                url: "<?php echo Fox::getUrl('project/create/check-project-code', array('isAjax' => TRUE)); ?>",
+                data: {"projectCode": pjtCode, "endDate": endDate, "startDate": startDate},
+                success: function(data) {
+                    var data1 = jQuery.parseJSON(data);
+                    if (data1['msg'] == 'True') {
+                        jQuery('#project').submit();
+                    } else {
+                        alert(data1['msg']);
+                    }
+                }
+            });
+        }
+    }
+//    $(function() {
+//        $('#add_new_company_data').dialog({
+//            autoOpen: false,
+//            width: 650,
+//            height: 500,
+//            title: 'Company Information',
+//            modal: true,
+//            draggable: true,
+//            resizable: false,
+//            show: 'slide',
+//            hide: 'slide'
+//        });
+//        $('.add_new_company').click(function(event) {
+//            event.preventDefault();
+//            if ($(this).attr('href') !== 'javascript:void(0)') {
+//                $('#add_new_company_data').dialog('open');
+//                $('#add_new_company_data').load($(this).attr('href'));
+//                $('#add_new_company_data').dialog('option', 'buttons', {"CLOSE": function() {
+//                        $(this).dialog("close");
+//                    }, "SAVE": function() {
+//                        submitForm();
+//                    }});
+//            }
+//        });
+//    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#created_new_task').dialog({
+            autoOpen: false,
+            width: 570,
+            height: 450,
+            title: 'Create Task',
+            modal: true,
+            draggable: true,
+            resizable: false,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('#request_new_task').dialog({
+            autoOpen: false,
+            width: 550,
+            height: 450,
+            title: 'Task Request',
+            modal: true,
+            draggable: true,
+            resizable: false,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.add_new_task').click(function(event) {
+            event.preventDefault();
+            getTaskCreationForm($(this).attr('href'));
+        });
+        $('.add_new_task').live('click', function(event) {
+            event.preventDefault();
+            getTaskCreationForm($(this).attr('href'));
+        });
+        function getTaskCreationForm(url) {
+            if (url !== 'javascript:void(0)') {
+                $('#created_new_task').dialog('open');
+                $('#created_new_task').load(url);
+                $('#created_new_task').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "OK": function() {
+                        checkTimeLeftForTask();
+                    }});
+            }
+        }
+        $('.request_new_task').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#request_new_task').dialog('open');
+                $('#request_new_task').load($(this).attr('href'));
+                $('#request_new_task').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "OK": function() {
+                        checkTimeLeftForTask();
+                    }});
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#add_new_bug').dialog({
+            autoOpen: false,
+            width: 570,
+            height: 450,
+            title: 'Add/Edit Bug',
+            modal: true,
+            draggable: true,
+            resizable: false,
+            show: 'slide',
+            hide: 'slide'
+        });
+
+        $('.add_new_bug').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#add_new_bug').dialog('open');
+                $('#add_new_bug').load($(this).attr('href'));
+                $('#add_new_bug').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "OK": function() {
+                        //checkTimeLeftForTask();
+                    }});
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(window).load(function() {
+        windowresize();
+        dialogHeight();
+        var $quickmenu = $('.quick-create-submenu');
+        $('ul.quick-create li').click(function() {
+            $(this).find('.quick-create-submenu').slideToggle();
+            $(this).siblings('ul.quick-create li').find('.quick-create-submenu').slideUp();
+        });
+        $('.quick-create-submenu li span, .quick-create-submenu li a').click(function(e) {
+//            e.stopPropagation();
+        });
+//        $('ul.quick-create li').click(function(e) {
+//            e.stopPropagation();
+//           if($quickmenu.is(":visible")){
+//               $quickmenu.hide();
+//           }
+//           else{
+//               $quickmenu.show();
+//           }
+//        });
+//        $('.quick-create-submenu li span, .quick-create-submenu li a').click(function(e) {
+////            e.stopPropagation();
+//        });
+    });
+</script>
+<script type="text/javascript">
+    function openProjectRequirementForm(url) {
+        if (url !== 'javascript:void(0)') {
+            closeRequirementContainer();
+            jQuery('#create_project_module_reqdata').dialog('open');
+            jQuery('#create_project_module_reqdata').load(url);
+            jQuery('#create_project_module_reqdata').dialog('option', 'buttons', {
+//                    "CLOSE": function() {
+//                        $(this).dialog("close");
+//                    }, "SAVE": function() {
+//                        checkIsDefault();
+//                    }
+            });//jQuery('#module_req_form').submit();
+        } else {
+            alert('Please select requirement.');
+        }
+    }
+//    $(function() {
+//        $('.add_milestone').dialog({
+//            autoOpen: false,
+//            width: 680,
+//            title: 'Add Milestone',
+//            modal: true,
+//            draggable: true,
+//            resizable: true,
+//            show: 'slide',
+//            hide: 'slide'
+//        });
+//        $('.add-new-milestone,.edit_milestone').click(function(event) {
+//            event.preventDefault();
+//            if ($(this).attr('href') !== 'javascript:void(0)') {
+//                $('.add_milestone').dialog('open');
+//                $('.add_milestone').load($(this).attr('href'));
+//                $('.add_milestone').dialog('option', 'buttons', {"CLOSE": function() {
+//                        $(this).dialog("close");
+//                    }, "SAVE": function() {
+//                        jQuery('#add-milestone-form').submit();
+//                    }});
+//            }
+//        });
+//    });
+
+
+
+
+
+    $(function() {
+        $('.custom_view_details').dialog({
+            autoOpen: false,
+            height: 400,
+            width: 760,
+            title: 'Custom Information',
+            modal: true,
+            draggable: true,
+            resizable: false,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.custom-view').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('.custom_view_details').dialog('open');
+                $('.custom_view_details').load($(this).attr('href'));
+                $('.custom_view_details').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }});
+            }
+        });
+    });
+
+    jQuery('#create_project_module_reqdata').dialog({
+        title: 'Add / Edit Requirement',
+        autoOpen: false,
+        height: 510,
+        width: 700,
+        modal: true,
+        draggable: true,
+        resizable: false,
+        show: 'slide',
+        hide: 'slide'
+    });
+    $(function() {
+        $('#add_member_ip_setting_dialog').dialog({
+            autoOpen: false,
+            height: 300,
+            width: 500,
+            title: 'Setting',
+            modal: true,
+            draggable: true,
+            resizable: true,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.add_member_ip_setting').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#add_member_ip_setting_dialog').dialog('open');
+                $('#add_member_ip_setting_dialog').load($(this).attr('href'));
+                $('#add_member_ip_setting_dialog').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "OK": function() {
+                        jQuery('#member_setting_form').submit();
+                    }});
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#add_new_message_data').dialog({
+            autoOpen: false,
+            height: 675,
+            title: 'Add/Edit Message',
+            width: 740,
+            modal: true,
+            draggable: true,
+            resizable: false,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.add_new_message').click(function(event) {
+            event.preventDefault();
+            $('#add_new_message_data').dialog('open');
+            $('#add_new_message_data').load($(this).attr('href'));
+            $('#add_new_message_data').dialog('option', 'buttons', {"CLOSE": function() {
+                    $(this).dialog("close");
+                }, "OK": function() {
+                    jQuery('#add_message_form').submit();
+                }});
+        });
+    });
+
+
+</script>
+<script type="text/javascript">
+    $(function() {
+        $('#request_relaxation_time').dialog({
+            autoOpen: false,
+            width: 400,
+            height: 300,
+            title: 'Request relaxation time',
+            modal: true,
+            draggable: true,
+            resizable: true,
+            show: 'slide',
+            hide: 'slide'
+        });
+        $('.request_relaxation_time').click(function(event) {
+            event.preventDefault();
+            if ($(this).attr('href') !== 'javascript:void(0)') {
+                $('#request_relaxation_time').dialog('open');
+                $('#request_relaxation_time').load($(this).attr('href'));
+                $('#request_relaxation_time').dialog('option', 'buttons', {"CLOSE": function() {
+                        $(this).dialog("close");
+                    }, "SAVE": function() {
+                        jQuery('#request_relaxation').submit();
+                    }});
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ajaxComplete(function() {
+        dialogHeight();
+        windowresize();
+        scrollMethod();
+    });
+    $(window).resize(function() {
+        dialogHeight();
+        windowresize();
+    });
+    function windowresize() {
+        var $divOb = $('#outer-div-dialog');
+        var $subDivOb = $('#outer-sub-div-dialog');
+        $divOb.css("left", ($(window).width() / 2) - ($divOb.width() / 2));
+        $subDivOb.css("left", ($(window).width() / 2) - ($subDivOb.width() / 2));
+    }
+    function dialogHeight() {
+        var rh = $('#outer-div-dialog').height();
+        var wHh = $(window).height();
+        if (rh < wHh)
+        {
+            $('#outer-div-dialog').css({position: "fixed"});
+        }
+        else {
+            $('#outer-div-dialog').css({position: "fixed"});
+        }
+    }
+</script>
+<script type="text/javascript">
+    /**********Dialog scroll panel**********/
+    $(document).ready(function() {
+        $('.dialog-content').wrapInner('<div class="paddingDiv"></div>');
+        slimscroll();
+        $('.dialog-content').click(function() {
+            slimscroll();
+        });
+
+    });
+    function slimscroll() {
+        var wh = $(window).height();
+        var dh = $('.dialog-content').height();
+        if (wh > dh) {
+            $('.dialog-content').slimScroll({
+                wheelStep: 20,
+                height: 'auto'
+            });
+        } else {
+            $('.dialog-content').css('max-height', wh);
+            $('.slimScrollDiv').css('max-height', wh);
+
+            $('.dialog-content').slimScroll({
+                wheelStep: 20,
+                height: wh + 'px'
+            });
+        }
+        ;
+    }
+    ;
+    $(document).ajaxComplete(function() {
+        if (!$('.dialog-content').children().hasClass('paddingDiv')) {
+            $('.dialog-content').wrapInner('<div class="paddingDiv"></div>');
+
+        }
+        slimscroll();
+//        $('.dialog-content').click(function() {
+//            slimscroll();
+//        });
+
+
+    });
+    jQuery(window).resize(function() {
+        slimscroll();
+//        $('.dialog-content').click(function() {
+//            slimscroll();
+//        });
+    });
+    $('#pms_member_logout').on('click', function() {
+        var logoutUrl;
+        if ($(this).parent('.login-btn').siblings('.parma_logout').find('.logout_type').is(':checked')) {
+            logoutUrl = '<?php echo Fox::getUrl('member/account/pre-logout', array('isAjax' => TRUE, 'logoutType' => Fox_Member_Model_AttendenceReason::TYPE_PERMANANET_LOGOUT)); ?>'
+        } else {
+            logoutUrl = '<?php echo Fox::getUrl('member/account/pre-logout', array('isAjax' => TRUE, 'logoutType' => Fox_Member_Model_AttendenceReason::TYPE_TEMP_LOGOUT)); ?>'
+        }
+        loadFormContainer(logoutUrl);
+    });
+
+    function ajaxNewList(url) {
+        var iurl = '<?php echo Fox::getThemeUrl('images/ajax-loader.gif'); ?>';
+        var iurlhtm = '<div class="load-data"><div class="loader-img"><img height="19" width="20" alt="Loading" src="' + iurl + '"></div></div>';
+        $('.content-left-stick').append(iurlhtm);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+//                console.log(data);
+                if (data.success) {
+                    $('.content-left-stick').html(data.content);
+                    $('.content-left-stick').find('div.load-data').remove();
+                }
+            }
+        });
+    }
+    function ajaxNewListAction(url, data) {
+        var iurl = '<?php echo Fox::getThemeUrl('images/ajax-loader.gif'); ?>';
+        var iurlhtm = '<div class="load-data"><div class="loader-img"><img height="19" width="20" alt="Loading" src="' + iurl + '"></div></div>';
+        $('.content-left-stick').append(iurlhtm);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+//                console.log(data);
+                if (data.success) {
+                    $('.content-left-stick').html(data.content);
+                    $('.content-left-stick').find('div.load-data').remove();
+                }
+            }
+        });
+    }
+    function ajaxFlagListAction(url, data) {
+        selected.length = 0;
+        var iurl = '<?php echo Fox::getThemeUrl('images/ajax-loader.gif'); ?>';
+        var iurlhtm = '<div class="load-data"><div class="loader-img"><img height="19" width="20" alt="Loading" src="' + iurl + '"></div></div>';
+        $('.content-left-stick').append(iurlhtm);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+//                console.log(data);
+                if (data.success) {
+                    $('.content-left-stick').html(data.content);
+                    $('.content-left-stick').find('div.load-data').remove();
+                }
+            }
+        });
+    }
+
+    function ajaxUnflagListAction(url, data) {
+        selected.length = 0;
+        var iurl = '<?php echo Fox::getThemeUrl('images/ajax-loader.gif'); ?>';
+        var iurlhtm = '<div class="load-data"><div class="loader-img"><img height="19" width="20" alt="Loading" src="' + iurl + '"></div></div>';
+        $('.content-left-stick').append(iurlhtm);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+//                console.log(data);
+                if (data.success) {
+                    $('.content-left-stick').html(data.content);
+                    $('.content-left-stick').find('div.load-data').remove();
+                }
+            }
+        });
+    }
+</script>
+<!--<div class="fl g-msg">
+    <ul class="fd-suc">
+        <li class="msg_info"><span class="msg-txt">Feedback is Successfully saved</span><span class="msgbox-icon er-checkapprove">&nbsp;</span><span class="msg-close er-close">&nbsp;</span></li>
+    </ul>
+    <ul class="warning-msg">
+        <li class="msg_warning"><span class="msg-txt">Warning Message</span><span class="msgbox-icon er-alert">&nbsp;</span><span class="msg-close er-close">&nbsp;</span></li>
+    </ul>
+    <ul class="errors">
+        <li class="msg_error"><span class="msg-txt">Error Message</span><span class="msgbox-icon er-close">&nbsp;</span><span class="msg-close er-close">&nbsp;</span></li>
+    </ul>
+    <ul class="success-box">
+        <li class="msg-success"><span class="msg-txt">A new task has been added to the project: </span><span class="msgbox-icon er-notification">&nbsp;</span><span class="msg-close er-close">&nbsp;</span>
+            <span class="db msg-box-project"><span class="msg-project-name">ErPMSfox - </span><a href="#" class="view-more">View More</a></span></li>
+    </ul>
+    <ul class="mail-box">
+        <li class="success-mail"><span class="msg-blue-text">New Mail recieved</span><span class="msgbox-icon er-message">&nbsp;</span><span class="msg-close er-close">&nbsp;</span>
+            <span class="db msg-box-project"><span class="msg-blck11">From : </span><span class="msg-pro-name">Erpmsfox</span></span>
+            <span class="db msg-box-project"><span class="msg-blck11">Subject : </span><span class="msg-blcktext"><span>[ Erpmsfox ] </span>Task Assigned to you</span></span>
+        </li>
+    </ul>
+</div>-->
